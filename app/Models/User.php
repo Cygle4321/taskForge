@@ -25,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'is_admin'
     ];
 
     public function getJWTIdentifier()
@@ -68,5 +69,10 @@ class User extends Authenticatable implements JWTSubject
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin === true;
     }
 }

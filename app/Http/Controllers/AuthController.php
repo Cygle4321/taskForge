@@ -40,6 +40,24 @@ class AuthController extends Controller
             'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
+    //permet de générer un nouveau token à partir de l'ancien, sans repasser par le login
+    public function refresh()
+    {
+        try {
+            // Rafraîchit le token actuel (le génère à nouveau)
+            $newToken = auth('api')->refresh();
+
+            return response()->json([
+                'access_token' => $newToken,
+                'token_type' => 'bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Impossible de rafraîchir le token'
+            ], 401);
+        }
+    }
 
     public function me()
     {
